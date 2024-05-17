@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ubl:Invoice xmlns:ubl="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2"
+             xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+             xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+    <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0</cbc:CustomizationID>
+    <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+    <cbc:ID>{{ data.invoiceNumber }}</cbc:ID>
+    <cbc:IssueDate>{{ data.invoiceDate }}</cbc:IssueDate>
+    <cbc:DueDate>{{ data.dueDate }}</cbc:DueDate>
+    <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+    <cbc:Note>{{ data.note }}</cbc:Note>
+    <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+    <cbc:BuyerReference>{{ data.leitwegID }}</cbc:BuyerReference>
+    <cac:AccountingSupplierParty>
+        <cac:Party>
+            <cbc:EndpointID schemeID="EM">{{ data.ownContactEmail }}</cbc:EndpointID>
+            <cac:PartyName>
+                <cbc:Name>{{ data.ownCompanyName }}</cbc:Name>
+            </cac:PartyName>
+            <cac:PostalAddress>
+                <cbc:StreetName>{{ data.ownStreetname }}</cbc:StreetName>
+                <cbc:CityName>{{ data.ownCityname }}</cbc:CityName>
+                <cbc:PostalZone>{{ data.ownPostalCode }}</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>DE</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyTaxScheme>
+                <cbc:CompanyID>{{ data.ownCompanyID }}</cbc:CompanyID>
+                <cac:TaxScheme>
+                    <cbc:ID>VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:PartyTaxScheme>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>{{ data.ownCompanyName }}</cbc:RegistrationName>
+                <cbc:CompanyID>{{ data.ownHraNo }}</cbc:CompanyID>
+                <cbc:CompanyLegalForm>{{ data.ownHraNo }}, Eintrag im {{ data.ownHraName }}</cbc:CompanyLegalForm>
+            </cac:PartyLegalEntity>
+            <cac:Contact>
+                <cbc:Name>{{ data.ownContactName }}</cbc:Name>
+                <cbc:Telephone>{{ data.ownContactNPhone }}</cbc:Telephone>
+                <cbc:ElectronicMail>{{ data.ownContactEmail }}</cbc:ElectronicMail>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingSupplierParty>
+    <cac:AccountingCustomerParty>
+        <cac:Party>
+            <cbc:EndpointID schemeID="EM">{{ data.customerEmail }}</cbc:EndpointID>
+            <cac:PartyIdentification>
+                <cbc:ID>{{ data.customerCompanyID }}</cbc:ID>
+            </cac:PartyIdentification>
+            <cac:PostalAddress>
+                <cbc:StreetName>{{ data.customerStreetname }}</cbc:StreetName>
+                <cbc:CityName>{{ data.customerCityname }}</cbc:CityName>
+                <cbc:PostalZone>{{ data.customerPostalZone }}</cbc:PostalZone>
+                <cac:Country>
+                    <cbc:IdentificationCode>DE</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>{{ data.customerCompanyName }}</cbc:RegistrationName>
+            </cac:PartyLegalEntity>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+    <cac:PaymentMeans>
+        <cbc:PaymentMeansCode>58</cbc:PaymentMeansCode>
+        <cac:PayeeFinancialAccount>
+            <cbc:ID>{{ data.ownIban }}</cbc:ID>
+        </cac:PayeeFinancialAccount>
+    </cac:PaymentMeans>
+    <cac:PaymentTerms>
+        <cbc:Note>Zahlung innerhalb von {{ data.dueDays }} Tagen ab Rechnungseingang ohne Abzüge</cbc:Note>
+    </cac:PaymentTerms>
+    <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="EUR">{{ data.priceTax }}</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+            <cbc:TaxableAmount currencyID="EUR">{{ data.priceNet }}</cbc:TaxableAmount>
+            <cbc:TaxAmount currencyID="EUR">{{ data.priceTax }}</cbc:TaxAmount>
+            <cac:TaxCategory>
+                <cbc:ID>S</cbc:ID>
+                <cbc:Percent>{{ data.taxPercent }}</cbc:Percent>
+                <cac:TaxScheme>
+                    <cbc:ID>VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:TaxCategory>
+        </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:LegalMonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="EUR">{{ data.priceNet }}</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="EUR">{{ data.priceNet }}</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="EUR">{{ data.priceFull }}</cbc:TaxInclusiveAmount>
+        <cbc:PayableAmount currencyID="EUR">{{ data.priceFull }}</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+    <cac:InvoiceLine>
+        <cbc:ID>{{ data.positionName }}</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="XPP">1</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="EUR">{{ data.priceNet }}</cbc:LineExtensionAmount>
+        <cac:InvoicePeriod>
+            <cbc:StartDate>{{ data.periodStart }}</cbc:StartDate>
+            <cbc:EndDate>{{ data.periodEnd }}</cbc:EndDate>
+        </cac:InvoicePeriod>
+        <cac:Item>
+            <cbc:Name>{{ data.positionName }}</cbc:Name>
+            <cac:SellersItemIdentification>
+                <cbc:ID>246</cbc:ID>
+            </cac:SellersItemIdentification>
+            <cac:ClassifiedTaxCategory>
+                <cbc:ID>S</cbc:ID>
+                <cbc:Percent>{{ data.taxPercent }}</cbc:Percent>
+                <cac:TaxScheme>
+                    <cbc:ID>VAT</cbc:ID>
+                </cac:TaxScheme>
+            </cac:ClassifiedTaxCategory>
+        </cac:Item>
+        <cac:Price>
+            <cbc:PriceAmount currencyID="EUR">{{ data.priceNet }}</cbc:PriceAmount>
+        </cac:Price>
+    </cac:InvoiceLine>
+</ubl:Invoice>
